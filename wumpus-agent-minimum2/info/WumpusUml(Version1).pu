@@ -1,0 +1,35 @@
+@startuml
+
+class Agent{
+  +int x;
+  +int y;
+  +int t;
+  +boolean alive;
+  +boolean win;
+  +double points;
+  +enum Level01GoalState;
+  +enum Level02GoalState;
+
+  +void run();
+  +Percept percept();
+  +Percept move();
+  +Percept shoot();
+  +Percept grab();
+  +Direction chooseRandomDirection();
+}
+
+class Cave{
+  +int maxCordinateVertical;
+  +int minCordinateVertical;
+  +int maxCordinateHorizontal;
+  +int minCordinateHorizontal;
+  +int maxKnowHorizonVertical;
+  +int minKnowHorizonVertical;
+  +int maxKnowHorizonHorizontal;
+  +int minxKnowHorizonhorizontal;
+  Doungeon listOfDungeon;
+  Doungeon[][] map;
+}
+
+
+@enduml
