@@ -27,9 +27,88 @@ class Cave{
   +int minKnowHorizonVertical;
   +int maxKnowHorizonHorizontal;
   +int minxKnowHorizonhorizontal;
-  Doungeon listOfDungeon;
+  +List<Doungeon> listOfDungeon;
   Doungeon[][] map;
+
+  +TravelPlan findNearestUnvisitedDungeon();
+  +TravelPlan findNearestMaybePitDungeon();
 }
+
+class Direction{
+  +enum NORTH;
+  +enum SOUTH;
+  +enum EAST;
+  +enum WEST;
+}
+
+class Doungeon{
+  +int x;
+  +int y;
+  +State pit;
+  +State wumpus;
+  +State gold;
+  +boolean visited;
+  +int id;
+  +boolean valid;
+  +State perceptBreeze;
+  +State perceptGlitter;
+  +State perceptStench;
+
+  +boolean safe();
+}
+
+class Move{
+  +Direction direction;
+  +int fromX;
+  +int fromY;
+  +int toX;
+  +int toY;
+  +int fromT;
+  +int toT;
+}
+
+class Percept{
+  +String state;
+  +boolean stench;
+  +boolean breeze;
+  +boolean scream;
+  +boolean glitter;
+  +boolean bump;
+  +int t;
+  double points;
+}
+
+class pit{
+  +int x;
+  +int y;
+}
+
+class Shoot{
+  +Direction direction;
+  +int fromX;
+  +int fromY;
+  +int toX;
+  +int toY;
+  +int fromT;
+  +int toT;
+}
+
+class State{
+  +enum UNKNOWN;
+  +enum MAYBE;
+  +enum NO;
+  +enum YES;
+  +enum DEAD;
+}
+
+class TravelPlan{
+  +List<Doungeon> path;
+  +boolean isEmpty();
+}
+
+Agent<-- Move
+Agent<-- TravelPlan : Has
+Move<|-- Direction : Use
 
 
 @enduml
