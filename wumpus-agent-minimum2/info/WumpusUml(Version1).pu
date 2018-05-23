@@ -78,7 +78,7 @@ class Percept{
   double points;
 }
 
-class pit{
+class Pit{
   +int x;
   +int y;
 }
@@ -107,8 +107,14 @@ class TravelPlan{
 }
 
 Agent<-- Move
+Agent<-- Shoot
+Agent<-- Percept
 Agent<-- TravelPlan : Has
 Move<|-- Direction : Use
+Shoot<|-- Direction : Use
+Doungeon<|--State : Has
+Doungeon<|--Cave : Has
+Cave<|-- Pit : Has
 
 
 @enduml
