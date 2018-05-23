@@ -43,7 +43,8 @@ public class Agent {
 	public boolean alive = true;
 	public boolean win = false;
 	public double points = 0;
-
+        
+        //TRAVEL_TO_BEST_MAYBE_PIT
 	public enum Level01GoalState {FIND_GOLD};
 	public enum Level02GoalState {EXPLORE_NEIGHBORHOOD, PLAN_TRAVEL, TRAVEL_TO_SAFE, TRAVEL_TO_BEST_WUMPUS, TEST_DUNGEON};
 

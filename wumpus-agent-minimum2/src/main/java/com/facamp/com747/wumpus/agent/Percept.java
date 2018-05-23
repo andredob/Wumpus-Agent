@@ -7,19 +7,29 @@ public class Percept {
 	boolean scream;
 	boolean glitter;
 	boolean bump;
+        boolean soundOfRock;
 	int t;
 	double points;
 	
-	public Percept(boolean stench, boolean breeze, boolean scream, boolean bump, boolean glitter, int t, double point) {
+	public Percept(boolean stench, boolean breeze, boolean scream, boolean bump, boolean glitter,boolean soundOfRock, int t, double point) {
 		super();
 		this.stench = stench;
 		this.breeze = breeze;
 		this.scream = scream;
 		this.bump = bump;
 		this.glitter = glitter;
+                this.soundOfRock = soundOfRock;
 		this.t = t;
 		this.points = point;
 	}
+
+        public boolean isSoundOfRock() {
+            return soundOfRock;
+        }
+
+        public void setSoundOfRock(boolean soundOfRock) {
+            this.soundOfRock = soundOfRock;
+        }
 
 	public Percept() {
 	}

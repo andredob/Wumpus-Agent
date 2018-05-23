@@ -397,7 +397,7 @@ rule plan_travel
 		tp = $c.findNearestMaybePitDungeon($s.x,$s.y);
 		if (tp!=null) {
 			insert(tp);
-			modify($s) {setState02(Level02GoalState.TRAVEL_TO_BEST_WUMPUS)};
+                        modify($s) {setState02(Level02GoalState.TRAVEL_TO_BEST_WUMPUS)}; 
 			Agent.logger.info("TravelPlan to nearest maybe_pit: "+tp.toString());
 			return;
 		}
@@ -423,8 +423,8 @@ rule realize_shoot_result
 		try {
 			retract($m);
 			modify($a) {setT($op.getT())};
-			modify($d) {setWumpus(State.DEAD)};
 			if ($op.isScream()) {
+                                modify($d) {setWumpus(State.DEAD)};
 				Agent.logger.info("KILLED WUMPUS: {}",$d.getWumpus());
 			} else {
 				Agent.logger.info("MISSED WUMPUS: {}",$d.getWumpus());
@@ -457,6 +457,21 @@ rule shoot
 		}	
 	
 	end;
+
+//when notTravelplan && notGold ---> go to nearst maybePit and throw rock
+
+rule realize_sound_of_rock
+                salience -20
+        when 
+            $a : Agent(alive)
+            $tr : ThrowRock(fromT == $a.t)
+            $d : Dungeon(x == $tr.getToX(), y == $tr.getToY())
+            $op : Percept($tr.getToT())
+        then 
+            try 
+                
+            
+                
 	
 rule move_agent
 		salience -20
@@ -477,5 +492,8 @@ rule move_agent
 			insert(ex);
 		}
 	end
+
+
+        
 
 	
