@@ -468,7 +468,22 @@ rule realize_sound_of_rock
             $d : Dungeon(x == $tr.getToX(), y == $tr.getToY())
             $op : Percept($tr.getToT())
         then 
-            try 
+            try {
+                Agent.logger.info("Rule fired ["+drools.getRule().getName()+"] to ["+$m.getToX()+","+$m.getToY()+"]");
+                retract($tr);
+                moodify($a) {setT($op.getT())};
+                    if($op.isSoundOfRock()){
+                        modify($d) {setPit(State.NO)}
+                        Agent.logger.info("Throw rock and not pit: {}",$d.getPit());
+                    } else {
+                        modyfy($d) {setPit(State.YES)}
+                        Agent.logger.info("Throw rock and pit: {}",$d.getPit());
+                    }
+                }
+            catch (Exception ex) {
+			$a.logger.error("ERROR", ex);
+			insert(ex);
+            }
                 
             
                 
