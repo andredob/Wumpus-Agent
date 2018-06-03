@@ -16,6 +16,7 @@ com\facamp\com747\wumpus\agent\Direction.class
 com\facamp\com747\wumpus\agent\Shoot$1.class
 com\facamp\com747\wumpus\agent\Agent$Level01GoalState.class
 com\facamp\com747\wumpus\agent\Percept.class
+com\facamp\com747\wumpus\agent\ThrowRock.class
 com\facamp\com747\wumpus\agent\Shoot.class
 com\facamp\com747\wumpus\agent\Move$1.class
 com\facamp\com747\wumpus\agent\Dungeon.class

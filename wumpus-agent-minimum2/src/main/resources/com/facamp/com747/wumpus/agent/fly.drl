@@ -460,30 +460,31 @@ rule shoot
 
 //when notTravelplan && notGold ---> go to nearst maybePit and throw rock
 
-rule realize_sound_of_rock
-                salience -20
-        when 
-            $a : Agent(alive)
-            $tr : ThrowRock(fromT == $a.t)
-            $d : Dungeon(x == $tr.getToX(), y == $tr.getToY())
-            $op : Percept($tr.getToT())
-        then 
-            try {
-                Agent.logger.info("Rule fired ["+drools.getRule().getName()+"] to ["+$m.getToX()+","+$m.getToY()+"]");
-                retract($tr);
-                moodify($a) {setT($op.getT())};
-                    if($op.isSoundOfRock()){
-                        modify($d) {setPit(State.NO)}
-                        Agent.logger.info("Throw rock and not pit: {}",$d.getPit());
-                    } else {
-                        modyfy($d) {setPit(State.YES)}
-                        Agent.logger.info("Throw rock and pit: {}",$d.getPit());
-                    }
-                }
-            catch (Exception ex) {
-			$a.logger.error("ERROR", ex);
-			insert(ex);
-            }
+//rule realize_sound_of_rock
+//                salience -20
+//        when 
+//            $a : Agent(alive)
+//            $tr : ThrowRock(fromT == $a.t)
+//            $d : Dungeon(x == $tr.getToX(), y == $tr.getToY())
+//            $op : Percept($tr.getToT())
+//        then 
+//            try {
+//                Agent.logger.info("Rule fired ["+drools.getRule().getName()+"] to ["+$m.getToX()+","+$m.getToY()+"]");
+//                retract($tr);
+//                moodify($a) {setT($op.getT())};
+//                    if($op.isSoundOfRock()){
+//                        modify($d) {setPit(State.NO)}
+//                        Agent.logger.info("Throw rock and not pit: {}",$d.getPit());
+//                    } else {
+//                        modyfy($d) {setPit(State.YES)}
+//                        Agent.logger.info("Throw rock and pit: {}",$d.getPit());
+//                    }
+//                }
+//            catch (Exception ex) {
+//			$a.logger.error("ERROR", ex);
+//			insert(ex);
+//            }
+//        end
                 
             
                 

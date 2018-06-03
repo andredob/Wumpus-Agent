@@ -13,7 +13,8 @@ public class TestAgent {
 		for(int i=0; i<n; i++) {
 			caveView.setIteraction(i);
 
-			Agent a = new Agent(System.currentTimeMillis());
+			//Agent a = new Agent(System.currentTimeMillis());
+			Agent a = new Agent(6);
 			caveView.setAgent(a);
 			a.setAgentStateChangeListener(caveView);
 
