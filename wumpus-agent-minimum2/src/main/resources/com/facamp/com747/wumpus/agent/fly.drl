@@ -6,6 +6,7 @@ import com.facamp.com747.wumpus.agent.Agent.Level02GoalState
 import com.facamp.com747.wumpus.agent.Dungeon
 import com.facamp.com747.wumpus.agent.Cave
 import com.facamp.com747.wumpus.agent.Pit
+import com.facamp.com747.wumpus.agent.ThrowRock
 
 import com.facamp.com747.wumpus.agent.Percept
 import com.facamp.com747.wumpus.agent.Move
@@ -325,6 +326,7 @@ rule step_on_travel_to_safe
 		$s : Agent(alive)
 		not (exists Move(fromT == $s.t))
 		not (exists Shoot(fromT == $s.t))
+                not (exists ThrowRock(fromT == $s.t))
 		$tp : TravelPlan(!$tp.isEmpty())
 	then
 		Agent.logger.info("Rule fired ["+drools.getRule().getName()+"] : path now is: {}",$tp.toString());
@@ -332,7 +334,8 @@ rule step_on_travel_to_safe
 		Dungeon d = $tp.push();
 		retract($tp);
 		insert($tp);
-		if (d.getWumpus()==State.NO) {
+                
+		if (d.getWumpus()==State.NO || d.getPit() == State.NO) {
 			Move m = new Move($s.x,$s.y,d.x,d.y,$s.t,$s.t+1);		
 			Agent.logger.info("Inserting: "+m.toString());
 			insert(m);
@@ -458,6 +461,65 @@ rule shoot
 	
 	end;
 
+                
+rule decide_to_throw_rock
+                salience -20
+        when 
+                $a : Agent(alive, hasRock)
+                $d : Dungeon(x == $a.getX(), y == $a.getY())
+                $r : Dungeon(pit == State.MAYBE, adjacent($r,$d))
+                not (exists $tp : TravelPlan())
+                
+        then
+                Agent.logger.info("Rule fired ["+drools.getRule().getName()+"] : "atirooooooooooooooooooooooooooooooooooooooooo"");
+		step($a);
+                ThrowRock tr = new ThrowRock($a.x,$a.y,$r.x,$r.y,$a.t,$a.t+1);
+                insert(tr);
+        end 
+
+rule move_agent
+		salience -20
+	when
+		$a : Agent(alive)
+		$m : Move(fromT == $a.t)
+		$d : Dungeon(x == $m.getToX(), y == $m.getToY())
+		$op: Percept(t == $a.t)
+		$c : Cave()
+	then	
+		Agent.logger.info("Rule fired ["+drools.getRule().getName()+"] to ["+$m.getToX()+","+$m.getToY()+"]");
+		try {
+			retract($op);
+			Percept p = $a.move($m.direction);
+			insert(p);
+		} catch (Exception ex) {
+			$a.logger.error("ERROR", ex);
+			insert(ex);
+		}
+	end
+
+ rule throw_rock
+                salience -5
+        when 
+                $a : Agent(alive)
+                $tr : ThrowRock( fromT == $a.t)
+                $d : Dungeon(x == $tr.getToX(), y == $tr.getToY())
+		$op: Percept(t == $a.t)
+		$c : Cave()
+                
+
+        then 
+                try {
+                        retract($op);
+                        Percept p = $a.throwRock($tr.direction);
+                        Agent.logger.info("---------------------------------------------------------Result="+p.toString());
+                        insert(p);
+
+                } catch (Exception ex) {
+                        $a.logger.error("ERROR", ex);
+                        insert(ex);
+                }	
+        end
+                
 //when notTravelplan && notGold ---> go to nearst maybePit and throw rock
 
 rule realize_sound_of_rock
@@ -485,30 +547,6 @@ rule realize_sound_of_rock
 			insert(ex);
             }
         end
-                
-            
-                
-	
-rule move_agent
-		salience -20
-	when
-		$a : Agent(alive)
-		$m : Move(fromT == $a.t)
-		$d : Dungeon(x == $m.getToX(), y == $m.getToY())
-		$op: Percept(t == $a.t)
-		$c : Cave()
-	then	
-		Agent.logger.info("Rule fired ["+drools.getRule().getName()+"] to ["+$m.getToX()+","+$m.getToY()+"]");
-		try {
-			retract($op);
-			Percept p = $a.move($m.direction);
-			insert(p);
-		} catch (Exception ex) {
-			$a.logger.error("ERROR", ex);
-			insert(ex);
-		}
-	end
-
 
         
 

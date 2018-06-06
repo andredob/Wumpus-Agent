@@ -43,6 +43,15 @@ public class Agent {
 	public boolean alive = true;
 	public boolean win = false;
 	public double points = 0;
+        public boolean hasRock = true;
+
+    public boolean isHasRock() {
+        return hasRock;
+    }
+
+    public void setHasRock(boolean hasRock) {
+        this.hasRock = hasRock;
+    }
         
         //TRAVEL_TO_BEST_MAYBE_PIT
 	public enum Level01GoalState {FIND_GOLD};
@@ -252,6 +261,13 @@ public class Agent {
 
 	public Percept shoot(Direction d) throws IOException {
 		String json = post("{id:"+sessionId+", fire:"+d+"}",new URL("http://66.228.62.78:8080/server-0.5-SNAPSHOT/action"));
+		logger.debug(json);
+		Percept p = new Gson().fromJson(json, Percept.class);
+		return p;
+	}
+        
+        public Percept throwRock(Direction d) throws IOException {
+		String json = post("{id:"+sessionId+", throwRock:"+d+"}",new URL("http://66.228.62.78:8080/server-0.5-SNAPSHOT/action"));
 		logger.debug(json);
 		Percept p = new Gson().fromJson(json, Percept.class);
 		return p;

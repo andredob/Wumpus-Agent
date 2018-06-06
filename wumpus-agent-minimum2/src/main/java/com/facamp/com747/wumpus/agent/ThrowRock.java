@@ -5,8 +5,8 @@
  */
 package com.facamp.com747.wumpus.agent;
 
-
 public class ThrowRock {
+
     public Direction direction;
     public int fromX;
     public int fromY;
@@ -14,9 +14,8 @@ public class ThrowRock {
     public int toY;
     public int fromT;
     public int toT;
-    
-    
-    public ThrowRock(Direction direction, int fromX, int fromY,int toX,int toY,int fromT, int toT){
+
+    public ThrowRock(Direction direction, int fromX, int fromY, int toX, int toY, int fromT, int toT) {
         this.direction = direction;
         this.fromX = fromX;
         this.fromY = fromY;
@@ -24,6 +23,28 @@ public class ThrowRock {
         this.toY = toY;
         this.fromT = fromT;
         this.toT = toT;
+    }
+
+    public ThrowRock(int fromX, int fromY, int toX, int toY, int fromT, int toT) throws Exception {
+        super();
+        this.fromX = fromX;
+        this.fromY = fromY;
+        this.toX = toX;
+        this.toY = toY;
+        this.fromT = fromT;
+        this.toT = toT;
+
+        if (toX - fromX == 1 && toY - fromY == 0) {
+            direction = Direction.WEST;
+        } else if (toX - fromX == -1 && toY - fromY == 0) {
+            direction = Direction.EAST;
+        } else if (toX - fromX == 0 && toY - fromY == 1) {
+            direction = Direction.NORTH;
+        } else if (toX - fromX == 0 && toY - fromY == -1) {
+            direction = Direction.SOUTH;
+        } else {
+            throw (new Exception("Impossible movement!"));
+        }
     }
 
     public Direction getDirection() {
@@ -81,5 +102,5 @@ public class ThrowRock {
     public void setToT(int toT) {
         this.toT = toT;
     }
-    
+
 }

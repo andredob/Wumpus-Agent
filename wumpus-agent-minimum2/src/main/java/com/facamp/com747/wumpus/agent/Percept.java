@@ -7,7 +7,8 @@ public class Percept {
 	boolean scream;
 	boolean glitter;
 	boolean bump;
-        boolean soundOfRock;
+        boolean soundOfRockFallingOnTheGround;
+        boolean rockOnTheGround;
 	int t;
 	double points;
 	
@@ -18,17 +19,17 @@ public class Percept {
 		this.scream = scream;
 		this.bump = bump;
 		this.glitter = glitter;
-                this.soundOfRock = soundOfRock;
+                this.soundOfRockFallingOnTheGround = soundOfRock;
 		this.t = t;
 		this.points = point;
 	}
 
         public boolean isSoundOfRock() {
-            return soundOfRock;
+            return soundOfRockFallingOnTheGround;
         }
 
         public void setSoundOfRock(boolean soundOfRock) {
-            this.soundOfRock = soundOfRock;
+            this.soundOfRockFallingOnTheGround = soundOfRock;
         }
 
 	public Percept() {
