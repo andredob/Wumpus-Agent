@@ -463,18 +463,19 @@ rule shoot
 
                 
 rule decide_to_throw_rock
-                salience -20
+                salience 20
         when 
                 $a : Agent(alive, hasRock)
                 $d : Dungeon(x == $a.getX(), y == $a.getY())
-                $r : Dungeon(pit == State.MAYBE, adjacent($r,$d))
+                $r : Dungeon(pit == State.MAYBE, adjacent($d,$r))
                 not (exists $tp : TravelPlan())
                 
         then
-                Agent.logger.info("Rule fired ["+drools.getRule().getName()+"] : "atirooooooooooooooooooooooooooooooooooooooooo"");
+                Agent.logger.info("Rule fired ["+drools.getRule().getName()+"]"+"ogouuuuuuuu");
 		step($a);
                 ThrowRock tr = new ThrowRock($a.x,$a.y,$r.x,$r.y,$a.t,$a.t+1);
                 insert(tr);
+                modify($a) {setHasRock(false)};
         end 
 
 rule move_agent
@@ -535,11 +536,15 @@ rule realize_sound_of_rock
                 retract($tr);
                 modify($a) {setT($op.getT())};
                     if($op.isSoundOfRock()){
+                        Move $m = new Move($a.getX(),$a.getY(),$d.x,$d.y,$a.t,$a.t+1);
                         modify($d) {setPit(State.NO)};
                         Agent.logger.info("Throw rock and not pit: {}",$d.getPit());
+                        insert($m);
                     } else {
+                        
                         modify($d) {setPit(State.YES)};
                         Agent.logger.info("Throw rock and pit: {}",$d.getPit());
+
                     }
                 }
             catch (Exception ex) {
