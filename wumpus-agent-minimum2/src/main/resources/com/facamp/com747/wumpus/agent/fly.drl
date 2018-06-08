@@ -462,24 +462,6 @@ rule shoot
 	
 	end;
 
-//I Had to raise the salience from -20 to 20 (reason: I really don't know)
-rule decide_to_throw_rock
-                salience 20
-        when 
-                $a : Agent(alive, getHasRock == State.YES)
-                $d : Dungeon(x == $a.getX(), y == $a.getY(),perceptBreeze == State.YES)
-                $r : Dungeon(pit == State.MAYBE, adjacent($d,$r))
-                
-                not (exists $tp : TravelPlan())
-                
-        then
-                Agent.logger.info("Rule fired ["+drools.getRule().getName()+"]"+"jogouuuuuuuu");
-		step($a);
-                ThrowRock tr = new ThrowRock($a.x,$a.y,$r.x,$r.y,$a.t,$a.t+1);
-                insert(tr);
-                modify($a) {setHasRock(State.NO)};
-        end 
-
 rule move_agent
 		salience -20
 	when
@@ -499,6 +481,26 @@ rule move_agent
 			insert(ex);
 		}
 	end
+
+//I Had to raise the salience from -20 to 20 (reason: I really don't know)
+rule decide_to_throw_rock
+                salience 20
+        when 
+                $a : Agent(alive, getHasRock == State.YES)
+                $d : Dungeon(x == $a.getX(), y == $a.getY(),perceptBreeze == State.YES)
+                $r : Dungeon(pit == State.MAYBE, adjacent($d,$r))
+                
+                not (exists $tp : TravelPlan())
+                
+        then
+                Agent.logger.info("Rule fired ["+drools.getRule().getName()+"]"+"jogouuuuuuuu");
+		step($a);
+                ThrowRock tr = new ThrowRock($a.x,$a.y,$r.x,$r.y,$a.t,$a.t+1);
+                insert(tr);
+                modify($a) {setHasRock(State.NO)};
+        end 
+
+
 
  rule throw_rock
                 salience -5
@@ -554,8 +556,8 @@ rule realize_sound_of_rock
         end
 
 rule grab_rock
-        salience 20
-    when 
+        salience 200 
+   when 
         $a : Agent(alive)
         $d : Dungeon(x == $a.getX(),y == $a.getY(),rockOnTheGround == State.YES)
     then 

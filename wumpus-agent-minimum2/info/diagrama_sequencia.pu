@@ -1,6 +1,15 @@
 @startuml
 
-Agent -> ser
-
+Agent -[#blue]> Server : http://66.228.62.78:8080/server-0.5-SNAPSHOT/creategame{email = andre-gd@hotmail.com}
+|||
+Server --[#red]> Agent : {id = 0fb855af-bf54-4327-9631-fae9c24d2892}
+|||
+Agent -[#blue]> Server : http://66.228.62.78:8080/server-0.5-SNAPSHOT/percept?id=89c65ed7-3da7-4f09-8ca7-7f1e817da349
+|||
+Server --[#red]> Agent : {"t":0,"state":"ACTIVE","breeze":true,"glitter":false,"stench":false,"bump":false,"scream":false,"soundOfRockFallingOnTheGround":false,"rockOnTheGround":false,"points":0}
+|||
+Agent -[#blue]> Server : http://66.228.62.78:8080/server-0.5-SNAPSHOT/action {id=76b5c4d5-78fd-4799-95ff-5bf2b1ba038f, move="n"}
+|||
+Server --[#red]> Agent : {"t":1,"state":"FALSE","breeze":false,"glitter":false,"stench":false,"bump":false,"scream":false,"soundOfRockFallingOnTheGround":false,"rockOnTheGround":false,"points":-100}
 
 @enduml

@@ -6,15 +6,15 @@ public class TestAgent {
     }
 
     public static void main(String[] args) {
-        int n = 100;
+        int n = 1;
         double sumOfPoints = 0;
         double numberOfWins = 0;
         CaveView caveView = new CaveView();
         for (int i = 0; i < n; i++) {
             caveView.setIteraction(i);
 
-            //Agent a = new Agent(System.currentTimeMillis());
-            Agent a = new Agent(i+42);
+            Agent a = new Agent(System.currentTimeMillis());
+            //Agent a = new Agent(i+42);
             caveView.setAgent(a);
             a.setAgentStateChangeListener(caveView);
 

@@ -106,6 +106,7 @@ class TravelPlan{
   +boolean isEmpty();
 }
 
+
 Agent --> Move
 Agent --> Shoot
 Agent --> Percept
