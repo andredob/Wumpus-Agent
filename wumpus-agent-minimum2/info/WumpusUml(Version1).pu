@@ -7,6 +7,7 @@ class Agent{
   +boolean alive;
   +boolean win;
   +double points;
+  +State hasRock;
   +enum Level01GoalState;
   +enum Level02GoalState;
 
@@ -53,6 +54,7 @@ class Doungeon{
   +State perceptBreeze;
   +State perceptGlitter;
   +State perceptStench;
+  +State rockOnTheGround;
 
   +boolean safe();
 }
@@ -74,6 +76,8 @@ class Percept{
   +boolean scream;
   +boolean glitter;
   +boolean bump;
+  +boolean soundOfRockFallingOnTheGround
+  +boolean rockOnTheGround;
   +int t;
   double points;
 }
@@ -84,6 +88,16 @@ class Pit{
 }
 
 class Shoot{
+  +Direction direction;
+  +int fromX;
+  +int fromY;
+  +int toX;
+  +int toY;
+  +int fromT;
+  +int toT;
+}
+
+class ThrowRock{
   +Direction direction;
   +int fromX;
   +int fromY;
@@ -109,10 +123,12 @@ class TravelPlan{
 
 Agent --> Move
 Agent --> Shoot
+Agent --> ThrowRock
 Agent --> Percept
 Agent --> TravelPlan
 Move --> Direction : Use
 Shoot --> Direction : Use
+ThrowRock --> Direction : Use
 Doungeon --* State
 Doungeon --* Cave
 Doungeon --* Pit
