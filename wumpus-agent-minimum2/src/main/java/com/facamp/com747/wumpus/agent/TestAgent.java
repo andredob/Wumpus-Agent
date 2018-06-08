@@ -6,7 +6,7 @@ public class TestAgent {
     }
 
     public static void main(String[] args) {
-        int n = 1;
+        int n = 100;
         double sumOfPoints = 0;
         double numberOfWins = 0;
         CaveView caveView = new CaveView();
@@ -14,7 +14,7 @@ public class TestAgent {
             caveView.setIteraction(i);
 
             //Agent a = new Agent(System.currentTimeMillis());
-            Agent a = new Agent(1);
+            Agent a = new Agent(i+42);
             caveView.setAgent(a);
             a.setAgentStateChangeListener(caveView);
 

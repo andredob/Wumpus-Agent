@@ -10,6 +10,15 @@ public class Dungeon {
 	public boolean visited = false;
 	public int id;
 	public boolean valid = true;
+        public State rockOnTheGround = State.UNKNOWN;
+
+    public State getRockOnTheGround() {
+        return rockOnTheGround;
+    }
+
+    public void setRockOnTheGround(State rockOnTheGround) {
+        this.rockOnTheGround = rockOnTheGround;
+    }
 	
 	public State perceptBreeze = State.UNKNOWN; 
 	public State perceptGlitter = State.UNKNOWN; 

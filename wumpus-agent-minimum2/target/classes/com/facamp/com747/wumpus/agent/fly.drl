@@ -51,12 +51,12 @@ rule percept_breeze
 		$l : Dungeon(x == $a.x, y == $a.y, perceptBreeze == State.UNKNOWN)
 		$p : Percept(t == $a.t)
 	then
-		Agent.logger.info("Rule fired ["+drools.getRule().getName()+"] = ["+$l.x+","+$l.y+"("+$l.id+" - "+$l.perceptBreeze+")]");
+		
 		if ($p.isBreeze()) {
 			modify($l) {setPerceptBreeze(State.YES)};}
 		else {
 			modify($l) {setPerceptBreeze(State.NO)};}
-			
+		Agent.logger.info("Rule fired ["+drools.getRule().getName()+"] = ["+$l.x+","+$l.y+"("+$l.id+" - "+$l.perceptBreeze+")]");
 	end
 
 rule percept_stench
@@ -326,8 +326,9 @@ rule step_on_travel_to_safe
 		$s : Agent(alive)
 		not (exists Move(fromT == $s.t))
 		not (exists Shoot(fromT == $s.t))
-                not (exists ThrowRock(fromT == $s.t))
+		not (exists ThrowRock(fromT == $s.t))
 		$tp : TravelPlan(!$tp.isEmpty())
+                
 	then
 		Agent.logger.info("Rule fired ["+drools.getRule().getName()+"] : path now is: {}",$tp.toString());
 		step($s);
@@ -335,7 +336,7 @@ rule step_on_travel_to_safe
 		retract($tp);
 		insert($tp);
                 
-		if (d.getWumpus()==State.NO || d.getPit() == State.NO) {
+		if (d.getWumpus()==State.NO) {
 			Move m = new Move($s.x,$s.y,d.x,d.y,$s.t,$s.t+1);		
 			Agent.logger.info("Inserting: "+m.toString());
 			insert(m);
@@ -461,21 +462,22 @@ rule shoot
 	
 	end;
 
-                
+//I Had to raise the salience from -20 to 20 (reason: I really don't know)
 rule decide_to_throw_rock
                 salience 20
         when 
-                $a : Agent(alive, hasRock)
-                $d : Dungeon(x == $a.getX(), y == $a.getY())
+                $a : Agent(alive, getHasRock == State.YES)
+                $d : Dungeon(x == $a.getX(), y == $a.getY(),perceptBreeze == State.YES)
                 $r : Dungeon(pit == State.MAYBE, adjacent($d,$r))
+                
                 not (exists $tp : TravelPlan())
                 
         then
-                Agent.logger.info("Rule fired ["+drools.getRule().getName()+"]"+"ogouuuuuuuu");
+                Agent.logger.info("Rule fired ["+drools.getRule().getName()+"]"+"jogouuuuuuuu");
 		step($a);
                 ThrowRock tr = new ThrowRock($a.x,$a.y,$r.x,$r.y,$a.t,$a.t+1);
                 insert(tr);
-                modify($a) {setHasRock(false)};
+                modify($a) {setHasRock(State.NO)};
         end 
 
 rule move_agent
@@ -506,13 +508,11 @@ rule move_agent
                 $d : Dungeon(x == $tr.getToX(), y == $tr.getToY())
 		$op: Percept(t == $a.t)
 		$c : Cave()
-                
-
         then 
                 try {
                         retract($op);
                         Percept p = $a.throwRock($tr.direction);
-                        Agent.logger.info("---------------------------------------------------------Result="+p.toString());
+                        Agent.logger.info("Result ThrowRock="+p.toString());
                         insert(p);
 
                 } catch (Exception ex) {
@@ -524,7 +524,7 @@ rule move_agent
 //when notTravelplan && notGold ---> go to nearst maybePit and throw rock
 
 rule realize_sound_of_rock
-                salience -20
+                salience 20
        when 
             $a : Agent(alive)
             $tr : ThrowRock(fromT == $a.t)
@@ -537,11 +537,11 @@ rule realize_sound_of_rock
                 modify($a) {setT($op.getT())};
                     if($op.isSoundOfRock()){
                         Move $m = new Move($a.getX(),$a.getY(),$d.x,$d.y,$a.t,$a.t+1);
-                        modify($d) {setPit(State.NO)};
-                        Agent.logger.info("Throw rock and not pit: {}",$d.getPit());
+                        modify($d) {setPit(State.NO),setRockOnTheGround(State.YES)};
+                        Agent.logger.info("Throw rock and not pit: {} direction: {}",$d.getPit(),$m.getDirection());
+                        
                         insert($m);
                     } else {
-                        
                         modify($d) {setPit(State.YES)};
                         Agent.logger.info("Throw rock and pit: {}",$d.getPit());
 
@@ -553,6 +553,19 @@ rule realize_sound_of_rock
             }
         end
 
-        
+rule grab_rock
+        salience 20
+    when 
+        $a : Agent(alive)
+        $d : Dungeon(x == $a.getX(),y == $a.getY(),rockOnTheGround == State.YES)
+    then 
+        Percept $p = $a.grabRock();
+        modify($a) {setHasRock(State.YES)};
+        modify($d) {setRockOnTheGround(State.NO)}
+        Agent.logger.info("Pegou a pedra!!!!!!!!!!");
+        insert($p);
+    end
+
+
 
 	
